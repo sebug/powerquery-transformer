@@ -1,0 +1,3 @@
+[submodule "powerquery-parser"]
+	path = powerquery-parser
+	url = https://github.com/microsoft/powerquery-parser
