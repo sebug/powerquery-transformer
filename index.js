@@ -12,5 +12,17 @@ const { DefaultSettings } = parseSettings;
 const { TriedLexParse, TriedLexParseInspection, tryLexParse, tryLexParseInspection } = parseTasks;
 console.log(tryLexParse);
 
+const parseText = (text) => {
+    const triedLexParse = tryLexParse(DefaultSettings, text);
+
+    console.log(triedLexParse);
+};
+
+parseText(`let
+	  x = 2 * 3
+	  in
+	  x`);
+
+
 
 
