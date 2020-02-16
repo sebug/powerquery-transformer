@@ -15,13 +15,19 @@ console.log(tryLexParse);
 const parseText = (text) => {
     const triedLexParse = tryLexParse(DefaultSettings, text);
 
-    console.log(triedLexParse);
+    return triedLexParse;
 };
 
-parseText(`let
+const transform = (tree) => {
+    return tree;
+};
+
+
+console.log(transform(parseText(`let
 	  x = 2 * 3
 	  in
-	  x`);
+				x`)));
+
 
 
 
