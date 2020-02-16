@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/sebug/powerquery-transformer#readme",
   "devDependencies": {
-    "@microsoft/powerquery-parser": "github:microsoft/powerquery-parser",
     "grapheme-splitter": "^1.0.4"
   }
 }
