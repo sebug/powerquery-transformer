@@ -10,7 +10,6 @@ const { Lexer, LexError, LexerSnapshot, TriedLexerSnapshot } = parseLexer;
 const { ParseError } = parseParser;
 const { DefaultSettings } = parseSettings;
 const { TriedLexParse, TriedLexParseInspection, tryLexParse, tryLexParseInspection } = parseTasks;
-console.log(tryLexParse);
 
 const parseText = (text) => {
     const triedLexParse = tryLexParse(DefaultSettings, text);
@@ -22,11 +21,15 @@ const transform = (tree) => {
     return tree;
 };
 
-
-console.log(transform(parseText(`let
+const parsed = parseText(`let
 	  x = 2 * 3
 	  in
-				x`)));
+			 x`);
+
+const transformed = transform(parsed.value.ast);
+
+
+console.log(transformed);
 
 
 
