@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/sebug/powerquery-transformer/issues"
   },
-  "homepage": "https://github.com/sebug/powerquery-transformer#readme"
+  "homepage": "https://github.com/sebug/powerquery-transformer#readme",
+  "devDependencies": {
+    "@microsoft/powerquery-parser": "github:microsoft/powerquery-parser",
+    "grapheme-splitter": "^1.0.4"
+  }
 }
