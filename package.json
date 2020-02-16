@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Given an M formula as input, apply various transformations",
   "main": "index.js",
-  "scripts": {
+    "scripts": {
+	"build": "cd powerquery-parser && npm ci && npm run-script build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
