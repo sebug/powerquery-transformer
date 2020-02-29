@@ -129,15 +129,69 @@ const printFunctionExpression = (fe, indent) => {
     return res;
 };
 
+const printParameterList = (pl, indent) => {
+    let res = '';
+
+    res += '(';
+
+    res += prettyPrint(pl.content, '');
+
+    res += ')';
+
+    return res;
+};
+
+const printParameter = (p, indent) => {
+    let res = '';
+
+    if (p.maybeOptionalConstant) {
+	res += prettyPrint(p.maybeOptionalConstant, '') + ' ';
+    }
+
+    res += prettyPrint(p.name, '');
+
+    if (p.maybeParameterType) {
+	res += ' ' + prettyPrint(p.maybeParameterType, '');
+    }
+
+    return res;
+};
+
+const printEachExpression = (e, indent) => {
+    return 'each ' + prettyPrint(e.paired, '');
+};
+
+const printAsNullablePrimitiveType = (anpt, indent) => {
+    return indent + 'as ' + prettyPrint(anpt.paired, '');
+};
+
+const printParenthesizedExpression = (pe, indent) => {
+    return indent + '(' + prettyPrint(pe.content, '') + ')';
+};
+
+const printEqualityExpression = (ee, indent) => {
+    return indent + prettyPrint(ee.left, '') + ' = ' + prettyPrint(ee.right, '');
+};
+
+const printItemAccessExpression = (iae, indent) => {
+    return indent + '{' + prettyPrint(iae.content, '') + '}';
+};
+
 const prettyPrint = (ast, indent) => {
     indent = indent || '';
     switch (ast.kind) {
     case 'ArrayWrapper':
 	return printArrayWrapper(ast, indent);
+    case 'AsNullablePrimitiveType':
+	return printAsNullablePrimitiveType(ast, indent);
     case 'Constant':
 	return printConstant(ast, indent);
     case 'Csv':
 	return printCsv(ast, indent);
+    case 'EachExpression':
+	return printEachExpression(ast, indent);
+    case 'EqualityExpression':
+	return printEqualityExpression(ast, indent);
     case 'FieldSelector':
 	return printFieldSelector(ast, indent);
     case 'FunctionExpression':
@@ -154,12 +208,20 @@ const prettyPrint = (ast, indent) => {
 	return printIdentifierPairedExpression(ast, indent);
     case 'InvokeExpression':
 	return printInvokeExpression(ast, indent);
+    case 'ItemAccessExpression':
+	return printItemAccessExpression(ast, indent);
     case 'LetExpression':
 	return printLet(ast, indent);
     case 'ListExpression':
 	return printListExpression(ast, indent);
     case 'LiteralExpression':
 	return printLiteralExpression(ast, indent);
+    case 'Parameter':
+	return printParameter(ast, indent);
+    case 'ParameterList':
+	return printParameterList(ast, indent);
+    case 'ParenthesizedExpression':
+	return printParenthesizedExpression(ast, indent);
     case 'PrimitiveType':
 	return printPrimitiveType(ast, indent);
     case 'RecordExpression':
