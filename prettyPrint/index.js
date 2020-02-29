@@ -1,8 +1,8 @@
 const fours = '    ';
 
 const printLet = (eLet, indent) => {
-    return indent + 'let\n' +
-	prettyPrint(eLet.variableList, indent + fours) +
+    return indent + 'let' +
+	prettyPrint(eLet.variableList, '\n' + indent + fours) +
 	'\n' +
 	indent + 'in' +
 	'\n' +
@@ -14,12 +14,12 @@ const printIdentifierExpression = (eIdentifier, indent) => {
 };
 
 const printArrayWrapper = (arrayWrapper, indent) => {
-    return arrayWrapper.elements.map(el => prettyPrint(el, indent)).join('\n');
+    return arrayWrapper.elements.map(el => prettyPrint(el, indent)).join('');
 };
 
 const printCsv = (csv, indent) => {
     return prettyPrint(csv.node, indent) +
-	(csv.maybeCommaConstant && csv.maybeCommaConstant.constantKind || '');
+	(csv.maybeCommaConstant && ', ' || '');
 };
 
 const printIdentifierPairedExpression = (ipe, indent) => {
