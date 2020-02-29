@@ -27,8 +27,6 @@ const parsed = parseText(textToParse);
 const transformed = transform(parsed.value.ast);
 
 
-console.log(transformed);
-
 console.log(prettyPrint(transformed));
 
 
