@@ -104,13 +104,29 @@ const printSectionMember = (sm, indent) => {
     }
     res += prettyPrint(sm.namePairedExpression, indent);
 
-    res += ';\n';
+    res += ';\n\n';
 
     return res;
 };
 
 const printFieldSelector = (fs, indent) => {
     return indent + '[' + prettyPrint(fs.content, '') + ']';
+};
+
+const printFunctionExpression = (fe, indent) => {
+    let res = '';
+
+    res += indent + prettyPrint(fe.parameters, '');
+
+    if (fe.maybeFunctionReturnType) {
+	res += ' ' + prettyPrint(fe.maybeFunctionReturnType);
+    }
+
+    res += ' =>\n';
+
+    res += prettyPrint(fe.expression, fours);
+
+    return res;
 };
 
 const prettyPrint = (ast, indent) => {
@@ -124,6 +140,8 @@ const prettyPrint = (ast, indent) => {
 	return printCsv(ast, indent);
     case 'FieldSelector':
 	return printFieldSelector(ast, indent);
+    case 'FunctionExpression':
+	return printFunctionExpression(ast, indent);
     case 'GeneralizedIdentifier':
 	return printGeneralizedIdentifier(ast, indent);
     case 'GeneralizedIdentifierPairedExpression':
