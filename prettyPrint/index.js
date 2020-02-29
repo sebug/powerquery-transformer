@@ -56,6 +56,10 @@ const printRecordExpression = (re, indent) => {
     return indent + '[' + prettyPrint(re.content, '') + ']';
 };
 
+const printRecordLiteral = (rl, indent) => {
+    return indent + '[' + prettyPrint(rl.content, '') + ']';
+};
+
 const printListExpression = (le, indent) => {
     return indent + '{' + prettyPrint(le.content, '') + '}';
 };
@@ -72,6 +76,43 @@ const printConstant = (c, indent) => {
     return indent + c.constantKind;
 };
 
+const printSection = (sect, indent) => {
+    let res = '';
+    if (sect.maybeLiteralAttributes) {
+	res += prettyPrint(sect.maybeLiteralAttributes, indent) + '\n';
+    }
+    res += 'section';
+    if (sect.maybeName) {
+	res += ' ' + sect.maybeName.literal;
+    }
+
+    res += ';\n';
+
+    res += prettyPrint(sect.sectionMembers);
+
+    return res;
+};
+
+const printSectionMember = (sm, indent) => {
+    let res = '';
+    if (sm.maybeLiteralAttributes) {
+	res += prettyPrint(sm.maybeLiteralAttributes, indent) + '\n';
+    }
+    if (sm.maybeSharedConstant) {
+	res += indent + 'shared ';
+	indent = '';
+    }
+    res += prettyPrint(sm.namePairedExpression, indent);
+
+    res += ';\n';
+
+    return res;
+};
+
+const printFieldSelector = (fs, indent) => {
+    return indent + '[' + prettyPrint(fs.content, '') + ']';
+};
+
 const prettyPrint = (ast, indent) => {
     indent = indent || '';
     switch (ast.kind) {
@@ -81,6 +122,8 @@ const prettyPrint = (ast, indent) => {
 	return printConstant(ast, indent);
     case 'Csv':
 	return printCsv(ast, indent);
+    case 'FieldSelector':
+	return printFieldSelector(ast, indent);
     case 'GeneralizedIdentifier':
 	return printGeneralizedIdentifier(ast, indent);
     case 'GeneralizedIdentifierPairedExpression':
@@ -103,8 +146,14 @@ const prettyPrint = (ast, indent) => {
 	return printPrimitiveType(ast, indent);
     case 'RecordExpression':
 	return printRecordExpression(ast, indent);
+    case 'RecordLiteral':
+	return printRecordLiteral(ast, indent);
     case 'RecursivePrimaryExpression':
 	return printRecursivePrimaryExpression(ast, indent);
+    case 'Section':
+	return printSection(ast, indent);
+    case 'SectionMember':
+	return printSectionMember(ast, indent);
     case 'TypePrimaryType':
 	return printTypePrimaryType(ast, indent);
     }
