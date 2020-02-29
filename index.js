@@ -11,6 +11,7 @@ const { ParseError } = parseParser;
 const { DefaultSettings } = parseSettings;
 const { TriedLexParse, TriedLexParseInspection, tryLexParse, tryLexParseInspection } = parseTasks;
 const fs = require('fs');
+const prettyPrint = require('./prettyPrint');
 
 const parseText = (text) => {
     const triedLexParse = tryLexParse(DefaultSettings, text);
@@ -31,7 +32,7 @@ const transformed = transform(parsed.value.ast);
 
 console.log(transformed);
 
-
+console.log(prettyPrint(transformed));
 
 
 
