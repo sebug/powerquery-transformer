@@ -177,9 +177,62 @@ const printItemAccessExpression = (iae, indent) => {
     return indent + '{' + prettyPrint(iae.content, '') + '}';
 };
 
+const printArithmeticExpression = (ae, indent) => {
+    return indent + prettyPrint(ae.left, '') + ' ' + ae.operator + ' ' +
+	prettyPrint(ae.right, '');
+};
+
+const printTableType = (tt, indent) => {
+    return indent + 'table ' + prettyPrint(tt.rowType, '');
+};
+
+const printFieldSpecificationList = (fsl, indent) => {
+    let res = '';
+
+    res += '[';
+
+    res += prettyPrint(fsl.content, '\n' + fours);
+
+    res += ']';
+
+    return res;
+};
+
+const printFieldSpecification = (fs, indent) => {
+    let res = '';
+
+    res += indent;
+
+    if (fs.maybeOptionalConstant) {
+	res += prettyPrint(fs.maybeOptionalConstant, '') + ' ';
+    }
+
+    res += prettyPrint(fs.name, '');
+
+    if (fs.maybeFieldTypeSpecification) {
+	res += ' ' + prettyPrint(fs.maybeFieldTypeSpecification, '');
+    }
+
+    return res;
+};
+
+const printFieldTypeSpecification = (fts, indent) => {
+    let res = '';
+
+    res += indent;
+
+    res += '= ';
+
+    res += prettyPrint(fts.fieldType, '');
+
+    return res;
+};
+
 const prettyPrint = (ast, indent) => {
     indent = indent || '';
     switch (ast.kind) {
+    case 'ArithmeticExpression':
+	return printArithmeticExpression(ast, indent);
     case 'ArrayWrapper':
 	return printArrayWrapper(ast, indent);
     case 'AsNullablePrimitiveType':
@@ -194,6 +247,12 @@ const prettyPrint = (ast, indent) => {
 	return printEqualityExpression(ast, indent);
     case 'FieldSelector':
 	return printFieldSelector(ast, indent);
+    case 'FieldSpecificationList':
+	return printFieldSpecificationList(ast, indent);
+    case 'FieldSpecification':
+	return printFieldSpecification(ast, indent);
+    case 'FieldTypeSpecification':
+	return printFieldTypeSpecification(ast, indent);
     case 'FunctionExpression':
 	return printFunctionExpression(ast, indent);
     case 'GeneralizedIdentifier':
@@ -234,6 +293,8 @@ const prettyPrint = (ast, indent) => {
 	return printSection(ast, indent);
     case 'SectionMember':
 	return printSectionMember(ast, indent);
+    case 'TableType':
+	return printTableType(ast, indent);
     case 'TypePrimaryType':
 	return printTypePrimaryType(ast, indent);
     }
