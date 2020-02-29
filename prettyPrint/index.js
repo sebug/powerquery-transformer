@@ -32,6 +32,11 @@ const printGeneralizedIdentifierPairedExpression = (gipe, indent) => {
 	prettyPrint(gipe.value, '');
 };
 
+const printGeneralizedIdentifierPairedAnyLiteral = (pipa, indent) => {
+    return indent + prettyPrint(pipa.key, '') + ' = ' +
+	prettyPrint(pipa.value, '');
+};
+
 const printIdentifier = (identifier, indent) => {
     return indent + identifier.literal;
 };
@@ -50,6 +55,19 @@ const printInvokeExpression = (ie, indent) => {
 
 const printLiteralExpression = (le, indent) => {
     return indent + le.literal;
+};
+
+const printMetadataExpression = (me, indent) => {
+    let res = '';
+    res += indent;
+
+    res += prettyPrint(me.left);
+
+    res += ' meta ';
+
+    res += prettyPrint(me.right);
+
+    return res;
 };
 
 const printRecordExpression = (re, indent) => {
@@ -162,7 +180,11 @@ const printEachExpression = (e, indent) => {
 };
 
 const printAsNullablePrimitiveType = (anpt, indent) => {
-    return indent + 'as ' + prettyPrint(anpt.paired, '');
+    return indent + ' as ' + prettyPrint(anpt.paired, '');
+};
+
+const printAsType = (at, indent) => {
+    return indent + ' as ' + prettyPrint(at.paired, '');
 };
 
 const printParenthesizedExpression = (pe, indent) => {
@@ -228,6 +250,61 @@ const printFieldTypeSpecification = (fts, indent) => {
     return res;
 };
 
+const printIfExpression = (ie, indent) => {
+    let res = '';
+
+    res += indent;
+
+    res += 'if ';
+
+    res += prettyPrint(ie.condition);
+
+    res += ' then\n'
+
+    res += prettyPrint(ie.trueExpression, fours);
+
+    res += '\n';
+
+    res += 'else\n';
+
+    res += prettyPrint(ie.falseExpression, fours);
+
+    return res;
+};
+
+const printListType = (lt, indent) => {
+    return indent + '{' + prettyPrint(lt.content, '') + '}';
+};
+
+const printIsExpression = (ie, indent) => {
+    let res = '';
+
+    res += indent;
+    res += prettyPrint(ie.left, '');
+    res += ' is ';
+    res += prettyPrint(ie.right, '');
+
+    return res;
+};
+
+const printFunctionType = (ft, indent) => {
+    let res = '';
+
+    res += indent;
+    res += 'function ';
+    res += prettyPrint(ft.parameters, '');
+    if (ft.functionReturnType) {
+	res += prettyPrint(ft.functionReturnType, '');
+    }
+
+    return res;
+};
+
+const printRecordType = (rt, indent) => {
+    return indent +
+	prettyPrint(rt.fields, fours);
+};
+
 const prettyPrint = (ast, indent) => {
     indent = indent || '';
     switch (ast.kind) {
@@ -237,6 +314,8 @@ const prettyPrint = (ast, indent) => {
 	return printArrayWrapper(ast, indent);
     case 'AsNullablePrimitiveType':
 	return printAsNullablePrimitiveType(ast, indent);
+    case 'AsType':
+	return printAsType(ast, indent);
     case 'Constant':
 	return printConstant(ast, indent);
     case 'Csv':
@@ -255,26 +334,38 @@ const prettyPrint = (ast, indent) => {
 	return printFieldTypeSpecification(ast, indent);
     case 'FunctionExpression':
 	return printFunctionExpression(ast, indent);
+    case 'FunctionType':
+	return printFunctionType(ast, indent);
     case 'GeneralizedIdentifier':
 	return printGeneralizedIdentifier(ast, indent);
     case 'GeneralizedIdentifierPairedExpression':
 	return printGeneralizedIdentifierPairedExpression(ast, indent);
+    case 'GeneralizedIdentifierPairedAnyLiteral':
+	return printGeneralizedIdentifierPairedAnyLiteral(ast, indent);
     case 'Identifier':
 	return printIdentifier(ast, indent);
     case 'IdentifierExpression':
 	return printIdentifierExpression(ast, indent);
     case 'IdentifierPairedExpression':
 	return printIdentifierPairedExpression(ast, indent);
+    case 'IfExpression':
+	return printIfExpression(ast, indent);
     case 'InvokeExpression':
 	return printInvokeExpression(ast, indent);
+    case 'IsExpression':
+	return printIsExpression(ast, indent);
     case 'ItemAccessExpression':
 	return printItemAccessExpression(ast, indent);
     case 'LetExpression':
 	return printLet(ast, indent);
     case 'ListExpression':
 	return printListExpression(ast, indent);
+    case 'ListType':
+	return printListType(ast, indent);
     case 'LiteralExpression':
 	return printLiteralExpression(ast, indent);
+    case 'MetadataExpression':
+	return printMetadataExpression(ast, indent);
     case 'Parameter':
 	return printParameter(ast, indent);
     case 'ParameterList':
@@ -287,6 +378,8 @@ const prettyPrint = (ast, indent) => {
 	return printRecordExpression(ast, indent);
     case 'RecordLiteral':
 	return printRecordLiteral(ast, indent);
+    case 'RecordType':
+	return printRecordType(ast, indent);
     case 'RecursivePrimaryExpression':
 	return printRecursivePrimaryExpression(ast, indent);
     case 'Section':
