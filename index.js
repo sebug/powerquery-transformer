@@ -10,6 +10,7 @@ const { Lexer, LexError, LexerSnapshot, TriedLexerSnapshot } = parseLexer;
 const { ParseError } = parseParser;
 const { DefaultSettings } = parseSettings;
 const { TriedLexParse, TriedLexParseInspection, tryLexParse, tryLexParseInspection } = parseTasks;
+const fs = require('fs');
 
 const parseText = (text) => {
     const triedLexParse = tryLexParse(DefaultSettings, text);
@@ -21,10 +22,9 @@ const transform = (tree) => {
     return tree;
 };
 
-const parsed = parseText(`let
-	  x = 2 * 3
-	  in
-			 x`);
+const textToParse = '' + fs.readFileSync('samples/covid.m');
+
+const parsed = parseText(textToParse);
 
 const transformed = transform(parsed.value.ast);
 
