@@ -6,3 +6,9 @@ Web.Contents queries).
 This means that we have to be able to write out the tree afterwards, I'll
 see how that is possible.
 
+To get started:
+
+	npm ci
+	npm run build
+	node index.js samples/covid.m
+

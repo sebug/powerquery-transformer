@@ -20,7 +20,12 @@ const parseText = (text) => {
     return triedLexParse;
 };
 
-const textToParse = '' + fs.readFileSync('samples/covid.m');
+if (process.argv.length < 3) {
+    console.error("Usage: node index.js path/to/file.m");
+    process.exit(1);
+}
+
+const textToParse = '' + fs.readFileSync(process.argv[2]);
 
 const parsed = parseText(textToParse);
 
