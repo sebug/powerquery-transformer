@@ -22,6 +22,15 @@ const printCsv = (csv, indent) => {
 	(csv.maybeCommaConstant && csv.maybeCommaConstant.constantKind || '');
 };
 
+const printIdentifierPairedExpression = (ipe, indent) => {
+    return indent + prettyPrint(ipe.key, '') + ' = ' +
+	prettyPrint(ipe.value, '');
+};
+
+const printIdentifier = (identifier, indent) => {
+    return indent + identifier.literal;
+};
+
 const prettyPrint = (ast, indent) => {
     indent = indent || '';
     switch (ast.kind) {
@@ -29,8 +38,12 @@ const prettyPrint = (ast, indent) => {
 	return printArrayWrapper(ast, indent);
     case 'Csv':
 	return printCsv(ast, indent);
+    case 'Identifier':
+	return printIdentifier(ast, indent);
     case 'IdentifierExpression':
 	return printIdentifierExpression(ast, indent);
+    case 'IdentifierPairedExpression':
+	return printIdentifierPairedExpression(ast, indent);
     case 'LetExpression':
 	return printLet(ast, indent);
     }
