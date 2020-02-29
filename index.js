@@ -12,15 +12,12 @@ const { DefaultSettings } = parseSettings;
 const { TriedLexParse, TriedLexParseInspection, tryLexParse, tryLexParseInspection } = parseTasks;
 const fs = require('fs');
 const prettyPrint = require('./prettyPrint');
+const transform = require('./transform');
 
 const parseText = (text) => {
     const triedLexParse = tryLexParse(DefaultSettings, text);
 
     return triedLexParse;
-};
-
-const transform = (tree) => {
-    return tree;
 };
 
 const textToParse = '' + fs.readFileSync('samples/covid.m');
