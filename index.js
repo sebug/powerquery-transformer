@@ -31,8 +31,13 @@ const parsed = parseText(textToParse);
 
 const transformed = transform(parsed.value.ast);
 
+const transformedPrettyPrinted = prettyPrint(transformed);
 
-console.log(prettyPrint(transformed));
+
+console.log(transformedPrettyPrinted);
+
+const transformedParsedAgain = parseText(transformedPrettyPrinted);
+
 
 
 
